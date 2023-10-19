@@ -1,0 +1,8 @@
+<begin>
+<node>arg=go;reply=A pořád nefunguju;
+<node>arg=ok;reply=I am glad it works ^^;
+<node>arg=degu;reply=Degu žije!;
+<node>arg=help;reply=HAHAHAHA! Did you expect me to help you ?;
+<node>arg=play;reply=Heck no, YouTube is piece of shit and I wont play it's content.;
+<node>arg=praise;reply=You are terrible;
+<end>

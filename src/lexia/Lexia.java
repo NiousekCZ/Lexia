@@ -17,6 +17,7 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import java.io.IOException;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+
 public class Lexia {
     
     private static final String fp_cfg = "cfg.txt";

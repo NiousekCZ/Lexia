@@ -6,23 +6,23 @@
 
 package lexia;
 
-import java.io.BufferedReader;
 import static lexia.Lexia.owner;
 import static lexia.Lexia.prefix;
 import static lexia.Lexia.token;
 import static lexia.Lexia.server;
+import static lexia.db.CommandsDB.db;
+import lexia.db.command;
 
-
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
-import static lexia.db.CommandsDB.db;
-import lexia.db.node;
 
 public class Config {
+    
     public static void Load(String filepath){
         try{
             Properties p = new Properties();
@@ -41,6 +41,7 @@ public class Config {
         regexCMD(cmd);
     }
     
+    //Resolve file input - took from soundboard src
     private static void regexCMD(String in) throws Exception{
         //===[ HEAD ]===
         String part = in.substring(0,7);
@@ -71,7 +72,7 @@ public class Config {
         
          //resolve each node
         for(/*NIC*/;count > 0;count--){
-            node tmp = new node();//Pro každou iteraci znovu inicializovat node (pokud ne, pøenášejí se hodnoty)
+            command tmp = new command();//Pro každou iteraci znovu inicializovat node (pokud ne, pøenášejí se hodnoty)
             if(part.equals("<node>")){
                 nwp = nwp.replace("<node>","");
                 
@@ -108,6 +109,7 @@ public class Config {
         }
     }
     
+    //Input Stream to string - Reads file's content and saves as string
     private static String IStoSTR(String filepath) throws FileNotFoundException, IOException{
         InputStream is = new FileInputStream(filepath);
         InputStreamReader isr = new InputStreamReader(is);

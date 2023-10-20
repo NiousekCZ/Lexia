@@ -1,4 +1,5 @@
 /**
+ * List of currently usable commands
  *
  * @author KLM
  */
@@ -9,7 +10,7 @@ import java.util.Vector;
 
 public class CommandsDB {
     
-    public static Vector<node> db = new Vector<node>();
+    public static Vector<command> db = new Vector<command>();
     
 }
 

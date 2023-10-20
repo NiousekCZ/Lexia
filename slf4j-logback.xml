@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<configuration>
+	<!-- Configuration of Default Logger -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%date{HH:mm:ss} %-5level [%thread]: - %message%n</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- Default Logger -->
+	<root>
+		<level value="INFO"/>
+		<appender-ref ref="CONSOLE"/>
+	</root>
+
+</configuration>

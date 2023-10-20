@@ -24,8 +24,9 @@ public class SlashHandler {
         //Register commands
         
         
-        SlashBadge.init(gateway, server);
+        //SlashBadge.init(gateway, server);
         //SlashAbuse.init(gateway, server);
+        SlashAbuse.init(gateway, "733262960507748412");
         //SlashRandom.init(gateway, server);
         //rewrites ???
     }

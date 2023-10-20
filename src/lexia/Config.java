@@ -72,7 +72,7 @@ public class Config {
         
          //resolve each node
         for(/*NIC*/;count > 0;count--){
-            command tmp = new command();//Pro kaûdou iteraci znovu inicializovat node (pokud ne, p¯en·öejÌ se hodnoty)
+            command tmp = new command();//Pro ka≈ædou iteraci znovu inicializovat node (pokud ne, p≈ôen√°≈°ej√≠ se hodnoty)
             if(part.equals("<node>")){
                 nwp = nwp.replace("<node>","");
                 

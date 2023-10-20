@@ -4,10 +4,10 @@
 <node>arg=degu;reply=Degu žije!;
 <node>arg=help;reply=HAHAHAHA! Did you expect me to help you ?;
 <node>arg=praise;reply=You are terrible;
-<node>arg=play_empty;reply=I need some path, dumbass.;
-<node>arg=play_bad;reply=I dont understand you, idiot.;
-<node>arg=play_local;reply=Yay! Local file enjoyer, at your service.;
-<node>arg=play_youtube;reply=Heck no, YouTube is piece of shit and I wont play it's content.;
-<node>arg=play_spotify;reply=Hey, wait, you know that Spotify is not free. How could poor bot like me afford that ?;
-<node>arg=play_apple;reply=Nah, I dont like Apple.;
+<node>arg=_play_empty;reply=I need some path, dumbass.;
+<node>arg=_play_bad;reply=I dont understand you, idiot.;
+<node>arg=_play_local;reply=Yay! Local file enjoyer, at your service.;
+<node>arg=_play_youtube;reply=Heck no, YouTube is piece of shit and I wont play it's content.;
+<node>arg=_play_spotify;reply=Hey, wait, you know that usabe Spotify is not free. How could poor bot like me afford that ?;
+<node>arg=_play_apple;reply=Nah, I dont like Apple. plus I dont have money.;
 <end>

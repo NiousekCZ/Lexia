@@ -8,21 +8,13 @@
 
 package lexia;
 
-
+import lexia.player.Player;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
-import lexia.player.LavaPlayerAudioProvider;
-import discord4j.voice.AudioProvider;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
@@ -44,8 +36,7 @@ public class Lexia {
 
     protected static MessageHandler Handler;
     protected static SlashHandler Slash;
-    
-    public static AudioProvider provider;
+    public static Player player;
     
     //Logger for this class
     protected static final Logger log = LoggerFactory.getLogger(Lexia.class);
@@ -58,20 +49,16 @@ public class Lexia {
         Config.Load(fp_cfg);
         Config.LoadCommands(fp_cmd);
         
-        //Initialize LavaPlayer
-        AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
-        playerManager.getConfiguration().setFrameBufferFactory(NonAllocatingAudioFrameBuffer::new);
-        AudioSourceManagers.registerRemoteSources(playerManager);
-        AudioPlayer player = playerManager.createPlayer();
-        provider = new LavaPlayerAudioProvider(player);
-        
         //Login to Discord
         DiscordClient client = DiscordClient.create(token);
         GatewayDiscordClient gateway = client.login().block();
         
         //Set Presence
         Status.set(gateway, "DISTURB");
-
+        
+        //Initialize LavaPlayer
+        player = new Player();
+        
         //Initialize handlers
         Handler = new MessageHandler();
         Slash = new SlashHandler(gateway, server);
@@ -97,10 +84,7 @@ public class Lexia {
             }
         }).blockLast();
         
-            
-
-        gateway.onDisconnect().block();
-        
+        gateway.onDisconnect().block(); //Manual -> MessageHandler.shutdown       
     }  
     private static void InitializeLogger(){
         LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();

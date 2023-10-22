@@ -8,7 +8,6 @@ package lexia;
 import static lexia.Lexia.prefix;
 import static lexia.db.CommandsDB.db;
 import lexia.db.command;
-import static lexia.Lexia.provider;
 import lexia.commands.CmndList;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
@@ -16,31 +15,43 @@ import discord4j.core.object.VoiceState;
 import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.channel.MessageChannel;
+import discord4j.core.object.entity.channel.TextChannel;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.voice.VoiceConnection;
+import static lexia.Lexia.player;
+import static lexia.player.Player.provider;
 
 public class MessageHandler {
     
+    private boolean isInVC;
     private VoiceConnection VCn;
             
     MessageHandler(){
-         
+         isInVC = false;
     }
     
     public void resolve(MessageCreateEvent event){
         Message msg = event.getMessage();
         if ("!ping".equals(msg.getContent())) {
             sendout(msg, "Pong!");
-        } else if(isVCCmd(msg)) {
+        } else if(isVCCmd(msg)) { // VC workaround
             voiceCmd(event);
-        } else if(isPlayCmd(msg)) {
-            playCmd(msg);
-        } else if(isForMe(msg)) {
+        } else if(isInVC) {
+            if(isPlayCmd(msg)){ // Play Message - VC required
+                playCmd(msg);
+            } else if(isForMe(msg)) { // Normal Message - VC
+                if(getOK(msg.getContent())){
+                    sendout(msg, getReply(msg.getContent()));
+                } else if (msg.getContent().equals((prefix + "commands"))) {
+                    sendout(msg, CmndList.show());
+                }
+            }
+        } else if(isForMe(msg)) { // Normal Message - no VC
             if(getOK(msg.getContent())){
                 sendout(msg, getReply(msg.getContent()));
             } else if (msg.getContent().equals((prefix + "commands"))) {
                 sendout(msg, CmndList.show());
-            }
+            } 
         } else {
             
         }
@@ -122,13 +133,15 @@ public class MessageHandler {
         }
         
         if(a.matches("([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?")) { // Local file regex
-            sendout(m, getReplyNP("_play_local"));
+            //sendout(m, getReplyNP("_play_local"));
+            player.play(m);
         } else if (a.contains("youtube")) {
-            sendout(m, getReplyNP("_play_youtube"));
+            //sendout(m, getReplyNP("_play_youtube"));
+            player.play(m);
         } else if (a.contains("spotify")) {
-            sendout(m, getReplyNP("_play_spotify"));
+            //sendout(m, getReplyNP("_play_spotify"));
         } else if (a.contains("apple")) {
-            sendout(m, getReplyNP("_play_apple"));
+            //sendout(m, getReplyNP("_play_apple"));
         } else {
             sendout(m, getReplyNP("_play_bad"));
         }
@@ -151,13 +164,17 @@ public class MessageHandler {
     
     private void voiceCmd(MessageCreateEvent event) {
         Message msg = event.getMessage();
-        if(msg.getContent().contains((prefix + "join"))) {
+        if(msg.getContent().equals((prefix + "join"))) {
             joinVC(event);
-        } else if(msg.getContent().contains((prefix + "leave"))) {
+        } else if(msg.getContent().equals((prefix + "leave"))) {
             leaveVC();
         } else if(msg.getContent().contains((prefix + "skip"))) {
             
         } else if(msg.getContent().contains((prefix + "vol"))) {
+            
+        } else if(msg.getContent().contains((prefix + "resume"))) {
+            
+        } else if(msg.getContent().contains((prefix + "pause"))) {
             
         } else {
             
@@ -170,12 +187,10 @@ public class MessageHandler {
             final VoiceState voiceState = member.getVoiceState().block();
             if (voiceState != null) {
                 final VoiceChannel channel = voiceState.getChannel().block();
-                if (channel != null) { // join returns a VoiceConnection which would be required if we were
-                    // adding disconnection features, but for now we are just ignoring it.
-                    //channel.join(spec -> spec.setProvider()).block();
+                if (channel != null) {
                     //System.out.println(channel.getName().toString());
                     VCn = channel.join(spec -> spec.setProvider(provider)).block();
-                    
+                    isInVC = true;
                 }
             }
         }
@@ -183,6 +198,10 @@ public class MessageHandler {
     
     private void leaveVC() {
         VCn.disconnect().block();
+        isInVC = false;
     }
     
+    public void shutdown(MessageCreateEvent event) {
+        event.getClient().onDisconnect().block();
+    }
 }

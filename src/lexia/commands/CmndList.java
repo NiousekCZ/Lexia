@@ -1,19 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Returns list of registered commands
+ *
+ * @author KLM
  */
+
 package lexia.commands;
 
-import discord4j.core.object.entity.Message;
 import static lexia.db.CommandsDB.db;
 import lexia.db.command;
 import static lexia.Lexia.prefix;
 
-/**
- *
- * @author KLM
- */
 public class CmndList {
     
     public static String show(){
@@ -23,8 +19,17 @@ public class CmndList {
                 builder.append((prefix + a.arg + "\r\n"));
             }
         }
+        
+        builder.append(("\r\nYou want to talk to me ? What do you think about yourself ?\r\n"));
+        builder.append(("\r\n" + prefix + "join\r\n"));
+        builder.append((prefix + "leave\r\n"));
+        
         builder.append(("\r\n" + prefix + "play\r\n"));
+        builder.append((prefix + "skip\r\n"));
+        builder.append((prefix + "vol\r\n"));
+        
         builder.append(("\r\nAre you happy now ?"));
+        
         return builder.toString();
     }
 }

@@ -4,10 +4,12 @@
 <node>arg=degu;reply=Degu žije!;
 <node>arg=help;reply=HAHAHAHA! Did you expect me to help you ?;
 <node>arg=praise;reply=You are terrible;
+<node>arg=_join_no_vc;reply=Is anyone there ? Voice channels are scary. I need companion. Go first!;
 <node>arg=_play_empty;reply=I need some path, dumbass.;
 <node>arg=_play_bad;reply=I dont understand you, idiot.;
+<node>arg=_play_no_vc;reply=Of course I can play into void. But that is pointless, I will wait for offical invitation into voice channel. Do not forget the red carpet.;
 <node>arg=_play_local;reply=Yay! Local file enjoyer, at your service.;
 <node>arg=_play_youtube;reply=Heck no, YouTube is piece of shit and I wont play it's content.;
-<node>arg=_play_spotify;reply=Hey, wait, you know that usabe Spotify is not free. How could poor bot like me afford that ?;
+<node>arg=_play_spotify;reply=Hey, wait, you know that usable Spotify is not free. How could poor bot like me afford that ?;
 <node>arg=_play_apple;reply=Nah, I dont like Apple. plus I dont have money.;
 <end>

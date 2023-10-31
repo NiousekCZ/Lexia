@@ -51,7 +51,9 @@ public class MessageHandler {
                 sendout(msg, getReply(msg.getContent()));
             } else if (msg.getContent().equals((prefix + "commands"))) {
                 sendout(msg, CmndList.show());
-            } 
+            } else if (msg.getContent().equals((prefix + "play"))) { // Voice commands but no in VC
+                sendout(msg, getReplyNP("_play_no_vc"));
+            }
         } else {
             
         }
@@ -133,19 +135,19 @@ public class MessageHandler {
         }
         
         if(a.matches("([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?")) { // Local file regex
-            //sendout(m, getReplyNP("_play_local"));
-            player.play(m);
+            sendout(m, getReplyNP("_play_local"));
+            //player.play(m);
         } else if (a.contains("youtube")) {
-            //sendout(m, getReplyNP("_play_youtube"));
-            player.play(m);
+            sendout(m, getReplyNP("_play_youtube"));
+            //player.play(m);
         } else if (a.contains("spotify")) {
-            //sendout(m, getReplyNP("_play_spotify"));
+            sendout(m, getReplyNP("_play_spotify"));
         } else if (a.contains("apple")) {
-            //sendout(m, getReplyNP("_play_apple"));
+            sendout(m, getReplyNP("_play_apple"));
         } else {
             sendout(m, getReplyNP("_play_bad"));
         }
-        
+        sendout(m, "Sorry.\r\nLavaplayer needs Java 17, I have only Java 8.\r\nWill you upgrade me?\r\nPretty Please.:pleading_face: ");
     }
 
     private static boolean isVCCmd(Message msg) {
@@ -192,6 +194,9 @@ public class MessageHandler {
                     VCn = channel.join(spec -> spec.setProvider(provider)).block();
                     isInVC = true;
                 }
+            } else {
+                // User is not in VC
+                sendout(event.getMessage(), getReplyNP("_join_no_vc"));
             }
         }
     }
@@ -204,4 +209,5 @@ public class MessageHandler {
     public void shutdown(MessageCreateEvent event) {
         event.getClient().onDisconnect().block();
     }
+    
 }

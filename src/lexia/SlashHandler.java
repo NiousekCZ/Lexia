@@ -11,24 +11,24 @@ import lexia.commands.SlashRandom;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.spec.InteractionApplicationCommandCallbackReplyMono;
+import static lexia.Lexia.appId;
 import lexia.commands.SlashBadge;
 
 public class SlashHandler {
     
     private static GatewayDiscordClient gateway;
-    private static String server;
-    
+    private final Long AppID;
+    private final Long server; 
+        
     SlashHandler(GatewayDiscordClient gw, String srv){
         gateway = gw;
-        server = srv;
+        server = Long.valueOf(srv);
+        AppID = Long.valueOf(appId);
+        
         //Register commands
-        
-        
-        //SlashBadge.init(gateway, server);
-        //SlashAbuse.init(gateway, server);
-        SlashAbuse.init(gateway, "733262960507748412");
-        //SlashRandom.init(gateway, server);
-        //rewrites ???
+        SlashBadge.init(gateway, server, AppID);
+        SlashAbuse.init(gateway, server, AppID);
+        SlashRandom.init(gateway, server, AppID);
     }
     
     public InteractionApplicationCommandCallbackReplyMono sendSlash(String arg, ChatInputInteractionEvent e){

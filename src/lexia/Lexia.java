@@ -9,6 +9,7 @@
 package lexia;
 
 import lexia.player.Player;
+import static lexia.commands.CmndPrune.Prune;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.ReactiveEventAdapter;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
+import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import java.io.IOException;
 import org.reactivestreams.Publisher;
@@ -33,6 +35,7 @@ public class Lexia {
     public static String owner;
     public static String prefix;
     protected static String server;
+    public static String appId;
 
     protected static MessageHandler Handler;
     protected static SlashHandler Slash;
@@ -53,6 +56,13 @@ public class Lexia {
         DiscordClient client = DiscordClient.create(token);
         GatewayDiscordClient gateway = client.login().block();
         
+        if (gateway == null ) {
+            log.error("Failed to connect to gateway!");
+            return;
+        }
+        
+        gateway.on(ReadyEvent.class).doOnNext(e -> log.info("Logged in as: " + e.getSelf().getTag())).then().block();
+        
         //Set Presence
         Status.set(gateway, "DISTURB");
         
@@ -66,6 +76,9 @@ public class Lexia {
         //Bot commands - activates even on slashes
         gateway.on(MessageCreateEvent.class).subscribe(event -> {
             Handler.resolve(event);
+            if (event.getMessage().getContent().equals((prefix + "prune"))) { // Voice commands but no in VC
+                Prune(gateway, event, 1);
+            }
         });
        
         //Discord integrated commands - slashes
@@ -83,6 +96,10 @@ public class Lexia {
                 }
             }
         }).blockLast();
+        /*
+        gateway.on(new messageDeleteBulk() {
+        
+        });*/
         
         gateway.onDisconnect().block(); //Manual -> MessageHandler.shutdown       
     }  

@@ -6,6 +6,7 @@
 package lexia.commands;
 
 import static lexia.Lexia.owner;
+import static lexia.Lexia.appId;
 
 import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
@@ -37,18 +38,26 @@ public class SlashBadge {
         }
     }
     
-    public static void init(GatewayDiscordClient gateway, String server){    
+    public static void init(GatewayDiscordClient gateway, long server, long id){    
         //BUILD
         ApplicationCommandRequest badgeCommand = ApplicationCommandRequest.builder()
                 .name("badge")
                 .description("Claim Active developer's badge")
                 .build();
         //REGISTER
+        
+        gateway.getRestClient().getApplicationService()
+            .createGuildApplicationCommand( id, server, badgeCommand)
+            .subscribe();
+    }
+}
+/*
+        //IDK
         GuildCommandRegistrar.create(gateway.getRestClient(), Collections.singletonList(badgeCommand))
                 .registerCommands(Snowflake.of(server))
                 .onErrorResume(e -> Mono.empty())
                 .blockLast();
-    
+        */
         /*
         //GLOBAL COMMAND
         gateway.getRestClient().getApplicationService()
@@ -61,5 +70,3 @@ public class SlashBadge {
             .createGuildApplicationCommand(applicationId, guildId, greetCmdRequest)
             .subscribe();
         */
-    }
-}

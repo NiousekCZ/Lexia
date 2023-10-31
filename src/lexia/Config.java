@@ -10,6 +10,7 @@ import static lexia.Lexia.owner;
 import static lexia.Lexia.prefix;
 import static lexia.Lexia.token;
 import static lexia.Lexia.server;
+import static lexia.Lexia.appId;
 import static lexia.db.CommandsDB.db;
 import lexia.db.command;
 
@@ -28,6 +29,7 @@ public class Config {
             Properties p = new Properties();
             p.load(new FileInputStream(filepath));
             token = p.getProperty("token");
+            appId = p.getProperty("appid");
             owner = p.getProperty("owner");
             prefix = p.getProperty("prefix");
             server = p.getProperty("server");

@@ -29,7 +29,7 @@ public class SlashRandom {
         return event.reply(result);
     }
 
-    public static void init(GatewayDiscordClient gateway, String server){
+    public static void init(GatewayDiscordClient gateway, long server, long id){
         //BUILD
         ApplicationCommandRequest randomCommand = ApplicationCommandRequest.builder()
                 .name("random")
@@ -41,11 +41,11 @@ public class SlashRandom {
                         .required(false)
                         .build())
                 .build();
+        
         //REGISTER
-        GuildCommandRegistrar.create(gateway.getRestClient(), Collections.singletonList(randomCommand))
-                .registerCommands(Snowflake.of(server))
-                .onErrorResume(e -> Mono.empty())
-                .blockLast();
+         gateway.getRestClient().getApplicationService()
+            .createGuildApplicationCommand( id, server, randomCommand)
+            .subscribe();
     }
     
     private static String result(Random random, ApplicationCommandInteraction acid) {

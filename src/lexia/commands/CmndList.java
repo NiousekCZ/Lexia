@@ -27,6 +27,8 @@ public class CmndList {
         builder.append(("\r\n" + prefix + "play\r\n"));
         builder.append((prefix + "skip\r\n"));
         builder.append((prefix + "vol\r\n"));
+        builder.append((prefix + "pause\r\n"));
+        builder.append((prefix + "resume\r\n"));
         
         builder.append(("\r\nAre you happy now ?"));
         

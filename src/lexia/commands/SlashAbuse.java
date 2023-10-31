@@ -21,16 +21,15 @@ public class SlashAbuse {
         return event.reply("Dear " + event.getInteraction().getUser().getUsername() + ", you are moron!");
     }
     
-    public static void init(GatewayDiscordClient gateway, String server){
+    public static void init(GatewayDiscordClient gateway, long server, long id){    
         //BUILD
         ApplicationCommandRequest abuseCommand = ApplicationCommandRequest.builder()
                 .name("abuse")
                 .description("Screw You")
                 .build();
         //REGISTER
-        GuildCommandRegistrar.create(gateway.getRestClient(), Collections.singletonList(abuseCommand))
-                .registerCommands(Snowflake.of(server))
-                .onErrorResume(e -> Mono.empty())
-                .blockLast();
+        gateway.getRestClient().getApplicationService()
+            .createGuildApplicationCommand( id, server, abuseCommand)
+            .subscribe();   
     }
 }

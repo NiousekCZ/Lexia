@@ -6,19 +6,14 @@
 package lexia.commands;
 
 import static lexia.Lexia.owner;
-import static lexia.Lexia.appId;
-
-import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.spec.InteractionApplicationCommandCallbackReplyMono;
 import discord4j.discordjson.json.ApplicationCommandRequest;
-import discord4j.rest.interaction.GuildCommandRegistrar;
-import java.util.Collections;
-import reactor.core.publisher.Mono;
 
 public class SlashBadge {
-    public static InteractionApplicationCommandCallbackReplyMono send(ChatInputInteractionEvent event, GatewayDiscordClient gateway){
+    
+    public static InteractionApplicationCommandCallbackReplyMono send(ChatInputInteractionEvent event) {
         //SEND
         //event.getInteraction().getUser().getDiscriminator();
         //event.getInteraction().getUser().getTag();//NAME#DISC
@@ -38,14 +33,14 @@ public class SlashBadge {
         }
     }
     
-    public static void init(GatewayDiscordClient gateway, long server, long id){    
+    public static void init(GatewayDiscordClient gateway, long server, long id) {    
         //BUILD
         ApplicationCommandRequest badgeCommand = ApplicationCommandRequest.builder()
                 .name("badge")
                 .description("Claim Active developer's badge")
                 .build();
-        //REGISTER
         
+        //REGISTER
         gateway.getRestClient().getApplicationService()
             .createGuildApplicationCommand( id, server, badgeCommand)
             .subscribe();

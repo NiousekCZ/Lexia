@@ -5,7 +5,6 @@
 
 package lexia.commands;
 
-import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.object.command.ApplicationCommandInteraction;
@@ -15,21 +14,18 @@ import discord4j.core.object.command.ApplicationCommandOption;
 import discord4j.core.spec.InteractionApplicationCommandCallbackReplyMono;
 import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
-import discord4j.rest.interaction.GuildCommandRegistrar;
-import java.util.Collections;
 import java.util.Random;
-import reactor.core.publisher.Mono;
 
 public class SlashRandom {
     
-    public static InteractionApplicationCommandCallbackReplyMono send(ChatInputInteractionEvent event){
+    public static InteractionApplicationCommandCallbackReplyMono send(ChatInputInteractionEvent event) {
         //SEND
         final Random random = new Random();
         String result = result(random, event.getInteraction().getCommandInteraction().get());
         return event.reply(result);
     }
 
-    public static void init(GatewayDiscordClient gateway, long server, long id){
+    public static void init(GatewayDiscordClient gateway, long server, long id) {
         //BUILD
         ApplicationCommandRequest randomCommand = ApplicationCommandRequest.builder()
                 .name("random")
@@ -39,8 +35,8 @@ public class SlashRandom {
                         .description("Number of digits (1-20)")
                         .type(ApplicationCommandOption.Type.INTEGER.getValue())
                         .required(false)
-                        .build())
-                .build();
+                        .build()
+                ).build();
         
         //REGISTER
          gateway.getRestClient().getApplicationService()

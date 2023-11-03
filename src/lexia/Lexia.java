@@ -55,13 +55,8 @@ public class Lexia {
         //Login to Discord
         DiscordClient client = DiscordClient.create(token);
         GatewayDiscordClient gateway = client.login().block();
-        
-        if (gateway == null ) {
-            log.error("Failed to connect to gateway!");
-            return;
-        }
-        
-        gateway.on(ReadyEvent.class).doOnNext(e -> log.info("Logged in as: " + e.getSelf().getTag())).then().block();
+              
+        //gateway.on(ReadyEvent.class).doOnNext(e -> log.info("Logged in as: " + e.getSelf().getTag())).then().block();
         
         //Set Presence
         Status.set(gateway, "DISTURB");
@@ -76,7 +71,7 @@ public class Lexia {
         //Bot commands - activates even on slashes
         gateway.on(MessageCreateEvent.class).subscribe(event -> {
             Handler.resolve(event);
-            if (event.getMessage().getContent().equals((prefix + "prune"))) { // Voice commands but no in VC
+            if (event.getMessage().getContent().equals((prefix + "prune"))) { // deleting msg test?
                 Prune(gateway, event, 1);
             }
         });

@@ -12,8 +12,15 @@ import discord4j.core.object.presence.ClientPresence;
 
 public class Status {
     
+    //Generates random status
+    /*
+    public static void set() {
+        
+    }
+    */
+    
     // Sets only presence
-    public static void set(GatewayDiscordClient gateway, String Mode){
+    public static void set(GatewayDiscordClient gateway, String Mode) {
         switch(Mode){
             case "ONLINE":
                 gateway.updatePresence(ClientPresence.online()).block();
@@ -93,9 +100,5 @@ public class Status {
                 gateway.updatePresence(ClientPresence.invisible());
                 break;
         }
-    }
-    
-    public void me(){
-        //final Mono<User> self = gateway.getSelf();
     }
 }

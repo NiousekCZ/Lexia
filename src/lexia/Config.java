@@ -33,7 +33,7 @@ public class Config {
             owner = p.getProperty("owner");
             prefix = p.getProperty("prefix");
             server = p.getProperty("server");
-        }catch(Exception e){
+        }catch(IOException e){
             throw new Error("Could not load configuration.", e);
         }
     }

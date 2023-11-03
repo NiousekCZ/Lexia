@@ -10,16 +10,16 @@ import static lexia.db.CommandsDB.db;
 import lexia.db.command;
 import lexia.commands.CmndList;
 
+import static lexia.Lexia.player;
+import static lexia.player.Player.provider;
+
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.VoiceState;
 import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.channel.MessageChannel;
-import discord4j.core.object.entity.channel.TextChannel;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.voice.VoiceConnection;
-import static lexia.Lexia.player;
-import static lexia.player.Player.provider;
 
 public class MessageHandler {
     
@@ -67,10 +67,7 @@ public class MessageHandler {
     
     //Reads prefix
     private static boolean isForMe(Message m){
-        if(m.getContent().contains(prefix)) {
-            return true;
-        }
-        return false;
+        return m.getContent().contains(prefix);
     }
     
     //returns node reply for asked arg
@@ -105,7 +102,7 @@ public class MessageHandler {
     
     //Break down ;play %link command
     private static boolean isPlayCmd(Message m){
-        String match = null;
+        String match;
         try {
             match = m.getContent().substring(0, 5);
         } catch(Exception e) {
@@ -142,12 +139,14 @@ public class MessageHandler {
             //player.play(m);
         } else if (a.contains("spotify")) {
             sendout(m, getReplyNP("_play_spotify"));
+            //player.play(m);
         } else if (a.contains("apple")) {
             sendout(m, getReplyNP("_play_apple"));
+            //player.play(m);
         } else {
             sendout(m, getReplyNP("_play_bad"));
         }
-        sendout(m, "Sorry.\r\nLavaplayer needs Java 17, I have only Java 8.\r\nWill you upgrade me?\r\nPretty Please.:pleading_face: ");
+        sendout(m, "Sorry.\r\nLavaplayer needs Java 17, I have only Java 8.\r\nWill you upgrade me ?\r\nPretty please.\r\n:pleading_face: ");
     }
 
     private static boolean isVCCmd(Message msg) {
@@ -158,6 +157,10 @@ public class MessageHandler {
         } else if(msg.getContent().contains((prefix + "skip"))) {
             return true;
         } else if(msg.getContent().contains((prefix + "vol"))) {
+            return true;
+        } else if(msg.getContent().contains((prefix + "resume"))) {
+            return true;
+        } else if(msg.getContent().contains((prefix + "pause"))) {
             return true;
         } else {
             return false;

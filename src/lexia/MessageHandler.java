@@ -132,21 +132,21 @@ public class MessageHandler {
         }
         
         if(a.matches("([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?")) { // Local file regex
-            sendout(m, getReplyNP("_play_local"));
-            //player.play(m);
+            //sendout(m, getReplyNP("_play_local"));
+            player.play(m);
         } else if (a.contains("youtube")) {
-            sendout(m, getReplyNP("_play_youtube"));
-            //player.play(m);
+            //sendout(m, getReplyNP("_play_youtube"));
+            player.play(m);
         } else if (a.contains("spotify")) {
-            sendout(m, getReplyNP("_play_spotify"));
+            //sendout(m, getReplyNP("_play_spotify"));
             //player.play(m);
         } else if (a.contains("apple")) {
-            sendout(m, getReplyNP("_play_apple"));
+            //sendout(m, getReplyNP("_play_apple"));
             //player.play(m);
         } else {
             sendout(m, getReplyNP("_play_bad"));
         }
-        sendout(m, "Sorry.\r\nLavaplayer needs Java 17, I have only Java 8.\r\nWill you upgrade me ?\r\nPretty please.\r\n:pleading_face: ");
+        //sendout(m, "Sorry.\r\nLavaplayer needs Java 17, I have only Java 8.\r\nWill you upgrade me ?\r\nPretty please.\r\n:pleading_face: ");
     }
 
     private static boolean isVCCmd(Message msg) {
@@ -162,6 +162,8 @@ public class MessageHandler {
             return true;
         } else if(msg.getContent().contains((prefix + "pause"))) {
             return true;
+        } else if(msg.getContent().contains((prefix + "stop"))) {
+            return true;
         } else {
             return false;
         }
@@ -176,10 +178,14 @@ public class MessageHandler {
         } else if(msg.getContent().contains((prefix + "skip"))) {
             
         } else if(msg.getContent().contains((prefix + "vol"))) {
-            
+            if(!player.setVol(msg)) {
+                sendout(msg, "Volume <0;100>");
+            }
         } else if(msg.getContent().contains((prefix + "resume"))) {
             
         } else if(msg.getContent().contains((prefix + "pause"))) {
+            
+        } else if(msg.getContent().contains((prefix + "stop"))) {
             
         } else {
             

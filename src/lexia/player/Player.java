@@ -10,7 +10,7 @@ package lexia.player;
  * @author KLM
  */
 
-
+import static lexia.Lexia.prefix;
     
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -19,7 +19,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
 import discord4j.core.object.entity.Message;
 import discord4j.voice.AudioProvider;
-
+import static java.lang.Integer.parseInt;
 
 public class Player {
     
@@ -45,8 +45,21 @@ public class Player {
             while(0x20 == a.charAt(0)){ // detect if space is left behind on begin
                 a = a.substring(1);
             }
- 
             playerManager.loadItem(a, scheduler);
+        }
+        
+        public boolean setVol(Message m) {
+            String a = m.getContent();
+            a = a.replace((prefix + "vol"), "");
+            while(0x20 == a.charAt(0)){ // detect if space is left behind on begin
+                a = a.substring(1);
+            }
+            int val = parseInt(a);
+            if(val >= 0 && val <= 100) {
+                player.setVolume(val);
+                return true;
+            }
+            return false;
         }
            
 }

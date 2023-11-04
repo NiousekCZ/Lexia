@@ -46,9 +46,8 @@ public class SlashAbuse {
     
     private static String getTarget(ChatInputInteractionEvent e) {
         
-        //ApplicationCommandInteraction acid = e.getInteraction().getCommandInteraction().get();
-        // acid.getOption();
-
+        ApplicationCommandInteraction acid = e.getInteraction().getCommandInteraction().get();
+        //acid.getOption("Target")
             return("Dear " + e.getInteraction().getUser().getUsername() + ", you are moron!");
     }
     

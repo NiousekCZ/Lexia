@@ -20,6 +20,7 @@ import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.object.entity.channel.VoiceChannel;
 import discord4j.voice.VoiceConnection;
+import static java.lang.Integer.parseInt;
 
 public class MessageHandler {
     
@@ -130,7 +131,9 @@ public class MessageHandler {
         while(0x20 == a.charAt(0)){ // detect if space is left behind on begin
             a = a.substring(1);
         }
-        
+        if(!jdkVersion(m)){
+            return;
+        }
         if(a.matches("([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?")) { // Local file regex
             //sendout(m, getReplyNP("_play_local"));
             player.play(m);
@@ -146,7 +149,6 @@ public class MessageHandler {
         } else {
             sendout(m, getReplyNP("_play_bad"));
         }
-        //sendout(m, "Sorry.\r\nLavaplayer needs Java 17, I have only Java 8.\r\nWill you upgrade me ?\r\nPretty please.\r\n:pleading_face: ");
     }
 
     private static boolean isVCCmd(Message msg) {
@@ -176,17 +178,17 @@ public class MessageHandler {
         } else if(msg.getContent().equals((prefix + "leave"))) {
             leaveVC();
         } else if(msg.getContent().contains((prefix + "skip"))) {
-            
+            player.skip();
         } else if(msg.getContent().contains((prefix + "vol"))) {
             if(!player.setVol(msg)) {
-                sendout(msg, "Volume <0;100>");
+                sendout(msg, getReplyNP("_volume_values"));
             }
         } else if(msg.getContent().contains((prefix + "resume"))) {
-            
+            player.pause(false);
         } else if(msg.getContent().contains((prefix + "pause"))) {
-            
+            player.pause(true);
         } else if(msg.getContent().contains((prefix + "stop"))) {
-            
+            player.stop();
         } else {
             
         }
@@ -219,4 +221,20 @@ public class MessageHandler {
         event.getClient().onDisconnect().block();
     }
     
+    public static boolean jdkVersion(Message m) {
+        String version = System.getProperty("java.version");
+
+        int index1 = version.indexOf(".");
+        int index2 = version.indexOf(".", version.indexOf(".") + 1);
+
+        int major = parseInt(version.substring(0, index1));
+        int minor = parseInt(version.substring((index1 + 1), index2));
+
+        if(major >= 17) {
+            return true;
+        } else {
+            sendout(m, ("Sorry.\r\nLavaplayer needs Java 17, I have only Java " + major + "." + minor + ".\r\nWill you upgrade me ?\r\nPretty please.\r\n:pleading_face:"));
+            return false;
+        }
+    }
 }

@@ -37,7 +37,7 @@ public class Player {
         provider = new LavaPlayerAudioProvider(player);
         scheduler = new TrackScheduler(player);
         //player.addListener(scheduler);
-        player.setVolume(100);
+        player.setVolume(25);
     }
         
         public void play(Message m){
@@ -62,4 +62,19 @@ public class Player {
             return false;
         }
            
+        public void pause(boolean p) {
+            boolean status = player.isPaused();
+            if((!p && status) || (p && !status)) {
+                player.setPaused(!status);
+            }
+        }
+        
+        public void skip() {
+            player.stopTrack();
+            //get new track
+        }
+        
+        public void stop() {
+            player.stopTrack();
+        }
 }

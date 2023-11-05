@@ -36,6 +36,12 @@ public class SlashAbuse {
         ApplicationCommandRequest abuseCommand = ApplicationCommandRequest.builder()
                 .name("abuse")
                 .description("Screw You")
+                /*.addOption(ApplicationCommandOptionData.builder()
+                        .name("Target")
+                        .description("aaaa")
+                        .type(ApplicationCommandOption.Type.USER.getValue())
+                        .required(false)
+                        .build())*/
                 .build();
         
         //REGISTER
@@ -46,9 +52,9 @@ public class SlashAbuse {
     
     private static String getTarget(ChatInputInteractionEvent e) {
         
-        ApplicationCommandInteraction acid = e.getInteraction().getCommandInteraction().get();
-        //acid.getOption("Target")
-            return("Dear " + e.getInteraction().getUser().getUsername() + ", you are moron!");
+        //ApplicationCommandInteraction acid = e.getInteraction().getCommandInteraction().get();
+        //acid.getOption("Target");
+        return("Dear " + e.getInteraction().getUser().getUsername() + ", you are moron!");
     }
     
 }

@@ -164,6 +164,8 @@ public class MessageHandler {
             return true;
         } else if(msg.getContent().contains((prefix + "pause"))) {
             return true;
+        } else if(msg.getContent().contains((prefix + "queue"))) {
+            return true;
         } else if(msg.getContent().contains((prefix + "stop"))) {
             return true;
         } else {
@@ -181,7 +183,7 @@ public class MessageHandler {
             player.skip();
         } else if(msg.getContent().contains((prefix + "vol"))) {
             if(!player.setVol(msg)) {
-                sendout(msg, getReplyNP("_volume_values"));
+                sendout(msg, "Volume: < 0; 100 >");
             }
         } else if(msg.getContent().contains((prefix + "resume"))) {
             player.pause(false);
@@ -189,6 +191,8 @@ public class MessageHandler {
             player.pause(true);
         } else if(msg.getContent().contains((prefix + "stop"))) {
             player.stop();
+        } else if(msg.getContent().contains((prefix + "queue"))) {
+            player.queue(msg);
         } else {
             
         }
@@ -221,7 +225,7 @@ public class MessageHandler {
         event.getClient().onDisconnect().block();
     }
     
-    public static boolean jdkVersion(Message m) {
+    private static boolean jdkVersion(Message m) {
         String version = System.getProperty("java.version");
 
         int index1 = version.indexOf(".");

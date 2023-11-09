@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package lexia.player;
-
 /**
  *
  * @author KLM
  */
+
+package lexia.player;
 
 import static lexia.Lexia.prefix;
     
@@ -16,6 +11,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer;
 import discord4j.core.object.entity.Message;
 import discord4j.voice.AudioProvider;
@@ -48,6 +44,14 @@ public class Player {
             playerManager.loadItem(a, scheduler);
         }
         
+        public void queue(Message m){
+            String a = m.getContent().substring(5);
+            while(0x20 == a.charAt(0)){ // detect if space is left behind on begin
+                a = a.substring(1);
+            }
+            
+        }
+        
         public boolean setVol(Message m) {
             String a = m.getContent();
             a = a.replace((prefix + "vol"), "");
@@ -71,10 +75,20 @@ public class Player {
         
         public void skip() {
             player.stopTrack();
-            //get new track
+            // Get new AudioTrack
+            //playerManager.loadItem(a, scheduler);
         }
         
         public void stop() {
             player.stopTrack();
+        }
+        
+        public boolean isPlaying() {
+            AudioTrack nowPlaying = player.getPlayingTrack();
+            System.out.println(nowPlaying);
+            if(nowPlaying != null) {
+                return true;
+            }
+            return false;
         }
 }

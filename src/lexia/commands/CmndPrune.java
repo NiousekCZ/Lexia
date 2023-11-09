@@ -9,6 +9,7 @@ import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
+import discord4j.core.object.entity.channel.Channel;
 import discord4j.core.object.entity.channel.GuildMessageChannel;
 import discord4j.core.object.entity.channel.MessageChannel;
 import discord4j.core.retriever.EntityRetrievalStrategy;
@@ -21,17 +22,24 @@ import reactor.core.publisher.Mono;
 
 public class CmndPrune {
     
-    public static void Prune(GatewayDiscordClient gw, MessageCreateEvent e, int cnt) {
-        
+    public static void Prune(GatewayDiscordClient gateway, MessageCreateEvent e, int cnt) {
+        /*
         List<Long> idlist = null;
+        
         
         ImmutableMessageDeleteBulk bulk = MessageDeleteBulk.builder()
                 //.addAllIds(idlist)
-                .addId(e.getMessage().getId().asString())
+                .addAllIds(idlist)
                 .channelId(e.getMessage().getChannelId().asString())
                 .build();
+        */
+        Mono<Channel> a = gateway.getChannelById(Snowflake.of(e.getMessage().getChannelId().asString()));
+        Mono<GuildMessageChannel> b = a.ofType(GuildMessageChannel.class);
         
-        GuildMessageChannel a = null;
-        //a.bulkDelete(bulk);
+        GuildMessageChannel channel = null;
+        channel.getMessagesBefore(Snowflake.of(Instant.now()))
+           .take(cnt)
+           .map(Message::getId)
+           .transform(channel::bulkDelete);
     }
 }

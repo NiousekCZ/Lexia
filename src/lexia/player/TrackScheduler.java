@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ *
+ * @author KLM
  */
+
 package lexia.player;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
@@ -15,10 +15,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- *
- * @author KLM
- */
 public class TrackScheduler implements AudioLoadResultHandler {
     
     private final AudioPlayer player;
@@ -28,7 +24,6 @@ public class TrackScheduler implements AudioLoadResultHandler {
         this.player = player;
     }
     
-    //IDK - asi nepoužívat
     public void queue(AudioTrack track) {
         if(!player.startTrack(track, true)) {
             queue.offer(track);

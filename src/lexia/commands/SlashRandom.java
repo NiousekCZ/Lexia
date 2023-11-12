@@ -1,6 +1,8 @@
 /**
+ * Sends random Number
  *
  * @author KLM
+ * @author Discord4J
  */
 
 package lexia.commands;
@@ -29,7 +31,7 @@ public class SlashRandom {
         //BUILD
         ApplicationCommandRequest randomCommand = ApplicationCommandRequest.builder()
                 .name("random")
-                .description("Send a random number")
+                .description("Send a random number.")
                 .addOption(ApplicationCommandOptionData.builder()
                         .name("digits")
                         .description("Number of digits (1-20)")

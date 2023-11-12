@@ -11,6 +11,7 @@ import static lexia.Lexia.prefix;
 import static lexia.Lexia.token;
 import static lexia.Lexia.server;
 import static lexia.Lexia.appId;
+
 import static lexia.db.CommandsDB.db;
 import lexia.db.command;
 
@@ -24,6 +25,7 @@ import java.util.Properties;
 
 public class Config {
     
+    // Loads ID type values from file.
     public static void Load(String filepath){
         try{
             Properties p = new Properties();
@@ -38,12 +40,13 @@ public class Config {
         }
     }
     
+    // Loads commands arguments and replies from file.
     public static void LoadCommands(String filepath) throws IOException, Exception{
         String cmd = IStoSTR(filepath);
         regexCMD(cmd);
     }
     
-    //Resolve file input - took from soundboard src
+    // Resolve file input - took from soundboard src
     private static void regexCMD(String in) throws Exception{
         //===[ HEAD ]===
         String part = in.substring(0,7);
@@ -111,7 +114,7 @@ public class Config {
         }
     }
     
-    //Input Stream to string - Reads file's content and saves as string
+    // Input Stream to string - Reads file's content and saves as string
     private static String IStoSTR(String filepath) throws FileNotFoundException, IOException{
         InputStream is = new FileInputStream(filepath);
         InputStreamReader isr = new InputStreamReader(is);

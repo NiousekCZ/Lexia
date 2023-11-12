@@ -1,14 +1,15 @@
 /**
- * Returns list of registered commands
+ * Returns list of registered commands.
  *
  * @author KLM
  */
 
 package lexia.commands;
 
+import static lexia.Lexia.prefix;
+
 import static lexia.db.CommandsDB.db;
 import lexia.db.command;
-import static lexia.Lexia.prefix;
 
 public class CmndList {
     
@@ -19,14 +20,16 @@ public class CmndList {
                 builder.append((prefix + a.arg + "\r\n"));
             }
         }
+        builder.append((prefix + "abuse @mention\r\n"));
+        builder.append((prefix + "greet @mention\r\n"));
         
         builder.append(("\r\nYou want to talk to me ? What do you think about yourself ?\r\n"));
         builder.append(("\r\n" + prefix + "join\r\n"));
         builder.append((prefix + "leave\r\n"));
         
-        builder.append(("\r\n" + prefix + "play\r\n"));
+        builder.append(("\r\n" + prefix + "play %path\r\n"));
         
-        builder.append(("\r\n" + prefix + "vol\r\n"));
+        builder.append(("\r\n" + prefix + "vol %value\r\n"));
         
         builder.append(("\r\n" + prefix + "stop\r\n"));
         builder.append((prefix + "skip - not working -> stop\r\n"));

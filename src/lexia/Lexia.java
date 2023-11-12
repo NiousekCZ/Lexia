@@ -9,7 +9,6 @@
 package lexia;
 
 import lexia.player.Player;
-import static lexia.commands.CmndPrune.Prune;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +22,10 @@ import discord4j.core.event.ReactiveEventAdapter;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import java.io.IOException;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 
 public class Lexia {
     
@@ -41,42 +41,40 @@ public class Lexia {
     protected static SlashHandler Slash;
     public static Player player;
     
-    //Logger for this class
+    // Logger for this class
     protected static final Logger log = LoggerFactory.getLogger(Lexia.class);
     
     public static void main(String[] args) throws IOException, Exception{
         
         InitializeLogger();
         
-        //Load configuration
+        // Load configuration
         Config.Load(fp_cfg);
         Config.LoadCommands(fp_cmd);
         
-        //Login to Discord
+        // Login to Discord
         DiscordClient client = DiscordClient.create(token);
         GatewayDiscordClient gateway = client.login().block();
               
         //gateway.on(ReadyEvent.class).doOnNext(e -> log.info("Logged in as: " + e.getSelf().getTag())).then().block();
         
-        //Set Presence
-        Status.set(gateway, "DISTURB");
+        // Set Presence
+        //Status.set(gateway, "DISTURB");
+        Status.set(gateway, "ONLINE", "WATCH", "dementy");
         
-        //Initialize LavaPlayer
+        // Initialize LavaPlayer
         player = new Player();
         
-        //Initialize handlers
+        // Initialize handlers
         Handler = new MessageHandler();
         Slash = new SlashHandler(gateway, server);
 
-        //Bot commands - activates even on slashes
+        // Bot commands - activates even on slashes
         gateway.on(MessageCreateEvent.class).subscribe(event -> {
             Handler.resolve(event);
-            if (event.getMessage().getContent().equals((prefix + "prune"))) { // deleting msg test?
-                Prune(gateway, event, 1);
-            }
         });
        
-        //Discord integrated commands - slashes
+        // Discord integrated commands - slashes
         gateway.on(new ReactiveEventAdapter() {
             @Override
             public Publisher<?> onChatInputInteraction(ChatInputInteractionEvent event) {
@@ -91,6 +89,7 @@ public class Lexia {
                 }
             }
         }).blockLast();
+        
         /*
         gateway.on(new messageDeleteBulk() {
         
@@ -98,6 +97,7 @@ public class Lexia {
         
         gateway.onDisconnect().block(); //Manual -> MessageHandler.shutdown       
     }  
+    
     private static void InitializeLogger(){
         LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
         try {

@@ -6,18 +6,47 @@
 
 package lexia;
 
+import static lexia.Lexia.owner;
+import static lexia.MessageHandler.clr;
+
 import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.presence.ClientActivity;
 import discord4j.core.object.presence.ClientPresence;
+import java.util.Arrays;
+import java.util.List;
 
 public class Status {
     
-    //Generates random status
-    /*
+    
+    public static boolean TrySet(MessageCreateEvent e) {
+        String idInput = e.getMember().get().getId().toString();
+        idInput = idInput.replace("Snowflake{","");
+        idInput = idInput.replace("}","");
+        if(!idInput.equals(owner)){// Only owner can change bot's status.
+            return false;
+        }
+        String a = e.getMessage().getContent();
+        a = a.replace(";status", "");
+        if(!a.equals("")){// Called without argument
+            a = clr(a);
+            String valid[] = {"online","away","idle","dist","disturb","invis","inv","invisible"};
+            List<String> list = Arrays.asList(valid);
+            
+            if(list.contains(a)){
+                System.out.println(a);
+            }
+            
+            set(e.getClient(),"");
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // Generates random status
     public static void set() {
         
     }
-    */
     
     // Sets only presence
     public static void set(GatewayDiscordClient gateway, String Mode) {
@@ -40,7 +69,7 @@ public class Status {
         }
     }
     
-    //Sets presence with activity
+    // Sets presence with activity
     public static void set(GatewayDiscordClient gateway, String Mode, String acMode, String activity) {
         ClientActivity acty = null;
         boolean isset = false;

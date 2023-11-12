@@ -1,5 +1,7 @@
 /**
+ * This class registers and executes build-in (slash) commands.
  *
+ * @author NiousekCZ
  * @author KLM
  */
 
@@ -21,19 +23,21 @@ public class SlashHandler {
     private final Long AppID;
     private final Long server; 
         
+    // Constructor
     SlashHandler(GatewayDiscordClient gw, String srv){
         gateway = gw;
         server = Long.valueOf(srv);
         AppID = Long.valueOf(appId);
         
-        //Register commands
+        // Register commands.
         SlashBadge.init(gateway, server, AppID);
         SlashAbuse.init(gateway, server, AppID);
         SlashRandom.init(gateway, server, AppID);
     }
     
+    // Executor
     public InteractionApplicationCommandCallbackReplyMono sendSlash(String arg, ChatInputInteractionEvent e){
-        // Run Slash commands
+        // Run Slash commands.
         switch (arg) {
             case "random":
                 return SlashRandom.send(e);
@@ -44,16 +48,5 @@ public class SlashHandler {
             default:
                 return null;
         }
-        /*
-        if(arg.equals("random")){
-        return SlashRandom.send(e);
-        } else if(arg.equals("abuse")){
-        return SlashAbuse.send(e);
-        } else if(arg.equals("badge")){
-        return SlashBadge.send(e);
-        } else {
-        return null;
-        }
-         */
     }
 }

@@ -22,8 +22,6 @@ public class SlashAbuse {
     
     public static InteractionApplicationCommandCallbackReplyMono send(ChatInputInteractionEvent event) {
         //SEND
-        //return event.reply("Dear " + event.getInteraction().getUser().getUsername() + ", you are moron!");
-        
         return event.reply(getTarget(event));
         //"Dear " + event.getInteraction().getUser().getUsername() + ", you are moron!"
         //"Hey, " + %user + "!\r\n" + %initiator + " says that you are dumb. And you know what ? I have to agree with him."
@@ -35,7 +33,7 @@ public class SlashAbuse {
         //BUILD
         ApplicationCommandRequest abuseCommand = ApplicationCommandRequest.builder()
                 .name("abuse")
-                .description("Screw You")
+                .description("Screw You!")
                 /*.addOption(ApplicationCommandOptionData.builder()
                         .name("Target")
                         .description("aaaa")

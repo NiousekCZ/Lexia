@@ -38,15 +38,18 @@ public class MessageHandler {
          isInVC = false;
     }
     
-    // Main method which decides what to do with normal commands.
+    // Main method which decides what to do with normal commands. When anything is executed, returns.
     public void resolve(MessageCreateEvent event){
         Message msg = event.getMessage();
         if ("!ping".equals(msg.getContent())) {
             // Test command - ping
             sendout(msg, "Pong!");
+            return;
         } else if (msg.getContent().equals((prefix + "commands"))) {
             // Command list
             sendout(msg, CmndList.show());
+            ret(event);
+            return;
         } else if(isForMe(msg)) {
             // Voice commands
             if(isVCCmd(msg)) {
@@ -63,34 +66,50 @@ public class MessageHandler {
                     // Play Not
                     if(isPlayCmd(msg)) {
                         sendout(event.getMessage(), getReplyNP("_play_no_vc"));
+                        ret(event);
                         return;
                     }
                 }
+                ret(event);
+                return;
             }
             // Mentionable commands
-            if (msg.getContent().contains(prefix) && msg.getContent().contains("@")) {
+            if (msg.getContent().contains("<@") && msg.getContent().contains(">")) {
                 getMentionable(event);
+                ret(event);
+                return;
             }
             // Status change commands
             if (msg.getContent().contains((prefix + "status"))) {
                 if(Status.TrySet(event)) {
-                    sendout(msg, "Status updated.\r\nAre you happy from this little useless feature.");
+                    sendout(msg, "Status updated.\r\nAre you happy from this little useless feature ?");
                 } else {
-                    sendout(msg, "You don't have permission to do that.");
+                    sendout(msg, "Wait, You don't have permission to do that.");
                 }
+                ret(event);
+                return;
             }
-            // Just reply commands
+            // Just reply commands. Leave on the end of Handler.
             if(getOK(msg.getContent())){
+                // Have valid reply
                 sendout(msg, getReply(msg.getContent()));
+            } else {
+                // Prefix detected - no valid reply option.
+                sendout(msg, "Hmm ?\r\nDo you want something?\r\nIf no, then dont use `" + prefix + "`.");
             }
+            ret(event);
+            return;
         } else {
-            
+            // Command was not for me. :(
         }
         // Debug place - keep clear
         
     }
     
-    
+    // Deletes command which was issued from channel. Use before 'return' statement.
+    private void ret(MessageCreateEvent e) {
+        e.getClient().getRestClient().getChannelService().deleteMessage(e.getMessage().getChannelId().asLong(), e.getMessage().getId().asLong(), "Lexia Automatic Command Cleanup").block();
+    }
     
     // Send message
     private static void sendout(Message msg, String in){
@@ -179,17 +198,17 @@ public class MessageHandler {
         
         // Parse requested path and decide source.
         if(a.matches("([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?")) { // Local file regex
-            sendout(m, getReplyNP("_play_local"));
+            //sendout(m, getReplyNP("_play_local"));
             player.play(m);
         } else if (a.contains("youtube")) {
-            sendout(m, getReplyNP("_play_youtube"));
+            //sendout(m, getReplyNP("_play_youtube"));
             player.play(m);
         } else if (a.contains("spotify")) {
-            sendout(m, getReplyNP("_play_spotify"));
+            //sendout(m, getReplyNP("_play_spotify"));
             sendout(m, "Spotify !NOT IMPLEMENTED!");
             //player.play(m);
         } else if (a.contains("apple")) {
-            sendout(m, getReplyNP("_play_apple"));
+            //sendout(m, getReplyNP("_play_apple"));
             sendout(m, "Apple Music !NOT IMPLEMENTED!");
             //player.play(m);
         } else {

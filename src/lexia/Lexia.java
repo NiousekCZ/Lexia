@@ -56,11 +56,11 @@ public class Lexia {
         DiscordClient client = DiscordClient.create(token);
         GatewayDiscordClient gateway = client.login().block();
               
-        //gateway.on(ReadyEvent.class).doOnNext(e -> log.info("Logged in as: " + e.getSelf().getTag())).then().block();
+        // Print name, with which is bot logged in
+        gateway.on(ReadyEvent.class).subscribe(ready -> log.info("Logged in as: " + ready.getSelf().getTag()));
         
-        // Set Presence
-        //Status.set(gateway, "DISTURB");
-        Status.set(gateway, "ONLINE", "WATCH", "dementy");
+        // Set default presence
+        Status.set(gateway, "ONLINE", "PLAY", (prefix + "help"));
         
         // Initialize LavaPlayer
         player = new Player();

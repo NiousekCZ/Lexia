@@ -2,7 +2,7 @@ How to not make a bot.
 
 How to use:
 
-cfg.txt -> generate your own bot token, change IDs of application, owner, server (you want to use bot on), prefix 
+cfg.txt -> generate your own bot token, change IDs of application, owner (optional - not used in program core as far as i remember), server (you want to use bot on - slashe commands), prefix 
 
 
 Libs:
